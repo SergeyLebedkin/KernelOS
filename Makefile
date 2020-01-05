@@ -7,6 +7,7 @@ LDFLAGS=-Wall -std=c++14
 # directories
 OBJ_DIR=./obj
 BIN_DIR=./bin
+SRC_DIR=./src
 INC_DIR=
 LIB_DIR=
 LIBRARIES=
@@ -32,7 +33,7 @@ compile: \
 
 # compile sources
 $(OBJ_DIR)/main.o: $(OBJ_DIR)
-	$(CC) $(CXXFLAGS) $(DEFINES) $(INC_DIR) -c main.cpp -o $(OBJ_DIR)/main.o 
+	$(CC) $(CXXFLAGS) $(DEFINES) $(INC_DIR) -c $(SRC_DIR)/main.cpp -o $(OBJ_DIR)/main.o 
 
 # create folder
 $(OBJ_DIR): clean
