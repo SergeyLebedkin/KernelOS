@@ -48,7 +48,7 @@ BuildPageMapLevel_1:
     mov     eax, 10100000b ; Set the PAE and PGE bit.
     mov     cr4, eax
 
-    ; enable LME bit
+    ; enable Long Mode (bit 8)
     mov     ecx, 0xC0000080
     rdmsr
     or      eax, 0x00000100 ; set bit 8.
