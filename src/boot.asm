@@ -14,9 +14,9 @@ ClearPageMaps:
     jl      ClearPageMaps
 
     ; build Page Map Level 4 (0xA000)
-    mov 	eax, 0xB003
-    mov		edi, 0xA000
-    mov		[edi], eax
+    mov     eax, 0xB003
+    mov     edi, 0xA000
+    mov     [edi], eax
 
     ; build Page Map Level 3 (0xB000)
     mov     eax, 0xC003
@@ -24,9 +24,9 @@ ClearPageMaps:
     mov     [edi], eax
 
     ; build Page Map Level 2 (0xC000)
-    mov    eax, 0xD003
-    mov    edi, 0xC000
-    mov    [edi], eax
+    mov     eax, 0xD003
+    mov     edi, 0xC000
+    mov     [edi], eax
 
     ; build Page Map Level 1 (0xD000)
     mov     eax, 0x0003
@@ -39,11 +39,11 @@ BuildPageMapLevel_1:
     jl      BuildPageMapLevel_1
 
     ; setup Page Tables pointer
-    mov     edi, 0x0000A000
+    mov     edi, 0x0000A000 ; set address
     mov     cr3, edi
 
     ; enable Physical-Address Extension (bit 5) and Page-Global (bit 7)
-    mov     eax, 10100000b ; Set the PAE and PGE bit.
+    mov     eax, 10100000b ; set the PAE and PGE bit.
     mov     cr4, eax
 
     ; enable Long Mode (bit 8)
