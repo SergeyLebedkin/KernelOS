@@ -31,17 +31,15 @@ ClearPageMaps:
     ; build Page Map Level 1 (0xD000)
     mov     eax, 0x0003
     mov     edi, 0xD000
-    xor     ecx, ecx
 BuildPageMapLevel_1:
     mov     [edi], eax
     add     edi, 8
     add     eax, 0x1000
-    inc     ecx
     cmp     edi, 0xE000
     jl      BuildPageMapLevel_1
 
     ; setup Page Tables pointer
-    mov     edi, 0xA000
+    mov     edi, 0x0000A000
     mov     cr3, edi
 
     ; enable Physical-Address Extension (bit 5) and Page-Global (bit 7)
