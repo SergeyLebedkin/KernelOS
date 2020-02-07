@@ -5,7 +5,7 @@
     cli
 
     ; clear Page Map Tables
-    mov     eax, 0x0000
+    xor     eax, eax
     mov     edi, 0xA000
 ClearPageMaps:
     mov     [edi], eax
