@@ -12,8 +12,8 @@
     ; clear Page Map Tables
     xor     eax, eax
     mov     edi, 0xA000
-    mov     ecx, 8192 ; 2048 word * 4 segments
-    rep     stosw
+    mov     ecx, 4096 * 4 ; 4 pages by 4096 bytes
+    rep     stosb
 
     ; build Page Map Level 4 (0xA000)
     mov     eax, 0xB003
@@ -76,6 +76,8 @@ LongMode:
     mov     fs, ax
     mov     gs, ax
     mov     ss, ax
+
+    jmp     $
 
     ; Blank out the screen to a blue color.
     mov     edi, 0xB8000
