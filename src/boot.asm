@@ -15,8 +15,8 @@
     ; clear Page Map Tables
     xor     eax, eax
     mov     edi, 0xA000
-    mov     ecx, 4096 * 4 ; 4 pages by 4096 bytes
-    rep     stosb
+    mov     ecx, 2048 * 4 ; 4 pages by 2048 words
+    rep     stosw
 
     ; build Page Map Level 4 (0xA000)
     mov     eax, 0xB003
