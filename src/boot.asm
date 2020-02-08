@@ -4,6 +4,11 @@
     ; disable interrupts
     cli
 
+    ; open Line A20
+    in      al, 92h
+    or      al, 00000010b
+    out     92h, al
+
     ; clear Page Map Tables
     xor     eax, eax
     mov     edi, 0xA000
@@ -56,8 +61,75 @@ BuildPageMapLevel_1:
     mov     eax, cr0
     or      eax, 0x80000001 ; set bit 0 and bit 31
     mov     cr0, eax
-
+    
     jmp     $
+
+; print hex
+; ax - value
+printh:
+    push    ax
+    push    bx
+    push    dx
+    push    si
+
+    ; store original value
+    mov     dx, ax
+    ; load hex codes table
+    mov     si, HEX_CODES_TABLE
+
+    ; print prefix
+    mov     al, '0'
+    call    printc
+    mov     al, 'x'
+    call    printc
+
+    ; print bits 15-12
+    mov     bx, dx
+    shr     bx, 12
+    and     bx, 0x000f
+    mov     al, byte [si + bx]
+    call    printc
+
+    ; print bits 11-8
+    mov     bx, dx
+    shr     bx, 8
+    and     bx, 0x000f
+    mov     al, byte [si + bx]
+    call    printc
+
+    ; print bits 11-8
+    mov     bx, dx
+    shr     bx, 4
+    and     bx, 0x000f
+    mov     al, byte [si + bx]
+    call    printc
+
+    ; print bits 11-8
+    mov     bx, dx
+    and     bx, 0x000f
+    mov     al, byte [si + bx]
+    call    printc
+
+    ; print space
+    mov     al, ' '
+    call    printc
+
+    pop     si
+    pop     dx
+    pop     bx
+    pop     ax
+    ret
+
+; print character
+; al - simbol
+printc:
+    push    ax
+    mov     ah, 0x0e
+    int     10h
+    pop     ax
+    ret
+; hex codes table
+HEX_CODES_TABLE: db '0123456789ABCDEF'
 
     ; allign size to 512 bytes
     times 510-($-$$) db 0
