@@ -77,8 +77,6 @@ LongMode:
     mov     gs, ax
     mov     ss, ax
 
-    jmp     $
-
     ; Blank out the screen to a blue color.
     mov     edi, 0xB8000
     mov     rcx, 500
