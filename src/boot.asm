@@ -1,6 +1,9 @@
     use16
     org     0x7C00
 
+    ; define Long Mode Code Segment Descriptor Selector
+    CODE_SEGMENT equ 0x08
+
     ; disable interrupts
     cli
 
@@ -19,9 +22,7 @@
     mov     eax, 0xB003
     mov     edi, 0xA000
     mov     [edi], eax
-    mov     edi, 0xA800
-    mov     [edi], eax
-
+    
     ; build Page Map Level 3 (0xB000)
     mov     eax, 0xC003
     mov     edi, 0xB000
@@ -62,10 +63,10 @@ BuildPageMapLevel_1:
     mov     cr0, eax
 
     ; load Global Descriptor Table
-    lgdt [GDT64Pointer]
+    lgdt    [GDT64Pointer]
 
     ; jump to Long Mode
-    jmp 0x8:LongMode
+    jmp     CODE_SEGMENT:LongMode
 
     use64
 LongMode:
