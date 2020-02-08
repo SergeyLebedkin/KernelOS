@@ -12,15 +12,14 @@
     ; clear Page Map Tables
     xor     eax, eax
     mov     edi, 0xA000
-ClearPageMaps:
-    mov     [edi], eax
-    add     edi, 4
-    cmp     edi, 0xE000
-    jl      ClearPageMaps
+    mov     ecx, 8192 ; 2048 word * 4 segments
+    rep     stosw
 
     ; build Page Map Level 4 (0xA000)
     mov     eax, 0xB003
     mov     edi, 0xA000
+    mov     [edi], eax
+    mov     edi, 0xA800
     mov     [edi], eax
 
     ; build Page Map Level 3 (0xB000)
@@ -61,77 +60,42 @@ BuildPageMapLevel_1:
     mov     eax, cr0
     or      eax, 0x80000001 ; set bit 0 and bit 31
     mov     cr0, eax
-    
+
+    ; load Global Descriptor Table
+    lgdt [GDT64Pointer]
+
+    ; jump to Long Mode
+    jmp 0x8:LongMode
+
+    use64
+LongMode:
+    ; clear segments registers
+    xor     ax, ax
+    mov     ds, ax
+    mov     es, ax
+    mov     fs, ax
+    mov     gs, ax
+    mov     ss, ax
+
+    ; Blank out the screen to a blue color.
+    mov     edi, 0xB8000
+    mov     rcx, 500
+    mov     rax, 0x1F201F201F201F20
+    rep     stosq
+
     jmp     $
 
-; print hex
-; ax - value
-printh:
-    push    ax
-    push    bx
-    push    dx
-    push    si
-
-    ; store original value
-    mov     dx, ax
-    ; load hex codes table
-    mov     si, HEX_CODES_TABLE
-
-    ; print prefix
-    mov     al, '0'
-    call    printc
-    mov     al, 'x'
-    call    printc
-
-    ; print bits 15-12
-    mov     bx, dx
-    shr     bx, 12
-    and     bx, 0x000f
-    mov     al, byte [si + bx]
-    call    printc
-
-    ; print bits 11-8
-    mov     bx, dx
-    shr     bx, 8
-    and     bx, 0x000f
-    mov     al, byte [si + bx]
-    call    printc
-
-    ; print bits 11-8
-    mov     bx, dx
-    shr     bx, 4
-    and     bx, 0x000f
-    mov     al, byte [si + bx]
-    call    printc
-
-    ; print bits 11-8
-    mov     bx, dx
-    and     bx, 0x000f
-    mov     al, byte [si + bx]
-    call    printc
-
-    ; print space
-    mov     al, ' '
-    call    printc
-
-    pop     si
-    pop     dx
-    pop     bx
-    pop     ax
-    ret
-
-; print character
-; al - simbol
-printc:
-    push    ax
-    mov     ah, 0x0e
-    int     10h
-    pop     ax
-    ret
-; hex codes table
-HEX_CODES_TABLE: db '0123456789ABCDEF'
+    ; Global Descriptor Table
+GDT64:
+    dq 0x0000000000000000 ; zero
+    dq 0x0020980000000000 ; code
+    dq 0x0000900000000000 ; data
+    ; Global Descriptor Table Pointer
+GDT64Pointer:
+    dw $ - GDT64 - 1
+    dq GDT64
 
     ; allign size to 512 bytes
-    times 510-($-$$) db 0
+    times 510 - ($-$$) db 0
     ; boot sector magic
     dw 0xaa55
