@@ -78,7 +78,7 @@ LongMode:
     mov     gs, ax
     mov     ss, ax
 
-    ; Blank out the screen to a blue color.
+    ; blank out the screen to a blue color.
     mov     edi, 0xB8000
     mov     rcx, 500
     mov     rax, 0x1F201F201F201F20
@@ -90,7 +90,7 @@ LongMode:
 GDT64:
     dq 0x0000000000000000 ; zero
     dq 0x0020980000000000 ; code
-    dq 0x0000900000000000 ; data
+    dq 0x0000900000000000 ; data (not necessary)
     ; Global Descriptor Table Pointer
 GDT64Pointer:
     dw $ - GDT64 - 1
