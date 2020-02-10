@@ -4,6 +4,18 @@
     ; define Long Mode Code Segment Descriptor Selector
     CODE_SEGMENT equ 0x08
 
+    mov     ax, 0x1000
+    mov     es, ax
+    xor     bx, bx   ; [es:bx] <- pointer to buffer where the data will be stored
+    mov     ah, 0x02 ; ah <- int 0x13 function. 0x02 = 'read'
+    mov     al, 0x02 ; al <- number of sectors to read (0x01 .. 0x80)
+    mov     cl, 0x02 ; cl <- sector (0x01 .. 0x11)
+    mov     ch, 0x00 ; ch <- cylinder (0x0 .. 0x3FF, upper 2 bits in 'cl')
+    mov     dh, 0x00 ; dh <- head number (0x0 .. 0xF)
+    int     0x13     ; BIOS interrupt
+    mov     ax, ds
+    mov     es, ax
+
     ; disable interrupts
     cli
 
@@ -21,6 +33,8 @@
     ; build Page Map Level 4 (0xA000)
     mov     eax, 0xB003
     mov     edi, 0xA000
+    mov     [edi], eax
+    mov     edi, 0xA800
     mov     [edi], eax
     
     ; build Page Map Level 3 (0xB000)
@@ -78,19 +92,14 @@ LongMode:
     mov     gs, ax
     mov     ss, ax
 
-    ; blank out the screen to a blue color.
-    mov     edi, 0xB8000
-    mov     rcx, 500
-    mov     rax, 0x1F201F201F201F20
-    rep     stosq
-
-    jmp     $
+    mov     rax, 0xFFFF_8000_0001_0000
+    jmp     rax
 
     ; Global Descriptor Table
 GDT64:
-    dq 0x0000000000000000 ; zero
-    dq 0x0020980000000000 ; code
-    dq 0x0000900000000000 ; data (not necessary)
+    dq 0x0000_0000_0000_0000 ; zero
+    dq 0x0020_9800_0000_0000 ; code
+    dq 0x0000_9000_0000_0000 ; data (not necessary)
     ; Global Descriptor Table Pointer
 GDT64Pointer:
     dw $ - GDT64 - 1
