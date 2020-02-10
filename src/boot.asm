@@ -8,7 +8,7 @@
     mov     es, ax
     xor     bx, bx   ; [es:bx] <- pointer to buffer where the data will be stored
     mov     ah, 0x02 ; ah <- int 0x13 function. 0x02 = 'read'
-    mov     al, 0x02 ; al <- number of sectors to read (0x01 .. 0x80)
+    mov     al, 0x20 ; al <- number of sectors to read (0x01 .. 0x80)
     mov     cl, 0x02 ; cl <- sector (0x01 .. 0x11)
     mov     ch, 0x00 ; ch <- cylinder (0x0 .. 0x3FF, upper 2 bits in 'cl')
     mov     dh, 0x00 ; dh <- head number (0x0 .. 0xF)
