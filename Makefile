@@ -28,8 +28,8 @@ compile: prepare
 	# compile boot sector
 	fasm ./src/boot/boot.asm ./bin/boot.bin
 	# compile kernel
-	${CC} ${CFLAGS}  -c ./src/kernel/kernel.c  -o ./obj/kernel/kernel.o
-	${AS} ${ASFLAGS} -c ./src/kernel/entry.asm -o ./obj/kernel/entry.o
+	${CPP} ${CPPFLAGS} -c ./src/kernel/kernel.cpp  -o ./obj/kernel/kernel.o
+	${AS}  ${ASFLAGS}  -c ./src/kernel/entry.asm   -o ./obj/kernel/entry.o
 
 prepare: clean
 	mkdir -p bin
