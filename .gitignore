@@ -77,3 +77,4 @@ dkms.conf
 *.bin
 
 # End of https://www.gitignore.io/api/c,c++
+kernel.s

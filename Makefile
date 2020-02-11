@@ -1,3 +1,13 @@
+CC  = gcc 
+AS  = as 
+CPP = g++ -nostdlib -nostdinc -ffreestanding -Wall -Wextra -fno-exceptions
+LD = ld
+
+CFLAGS    = -nostdlib -nostdinc -ffreestanding -Wall -Wextra -fno-exceptions
+ASFLAGS   = 
+CPPFLAGS  = -nostdlib -nostdinc -ffreestanding -Wall -Wextra -fno-exceptions
+LDFLAGS   = 
+
 all: link
 	# run
 	cat ./bin/boot.bin ./bin/kernel.bin > image.bin
@@ -5,7 +15,11 @@ all: link
 
 link: compile
 	# link kernel
-	ld ./obj/kernel/entry.o ./obj/kernel/kernel.o -o ./bin/kernel.elf
+	${LD}                 \
+	./obj/kernel/entry.o  \
+	./obj/kernel/kernel.o \
+	-o ./bin/kernel.elf
+	# get raw kernel code
 	objcopy -O binary ./bin/kernel.elf ./bin/kernel.bin
 	# get kernel assembler (for debug only)
 	objdump -M intel -b binary -m i386:x86-64 -D ./bin/kernel.bin > kernel.s
@@ -14,8 +28,8 @@ compile: prepare
 	# compile boot sector
 	fasm ./src/boot/boot.asm ./bin/boot.bin
 	# compile kernel
-	gcc -nostdlib -nostdinc -ffreestanding -Wall -Wextra -fno-exceptions -c ./src/kernel/kernel.c -o ./obj/kernel/kernel.o
-	as -c ./src/kernel/entry.asm -o ./obj/kernel/entry.o
+	${CC} ${CFLAGS}  -c ./src/kernel/kernel.c  -o ./obj/kernel/kernel.o
+	${AS} ${ASFLAGS} -c ./src/kernel/entry.asm -o ./obj/kernel/entry.o
 
 prepare: clean
 	mkdir -p bin
