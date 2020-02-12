@@ -1,12 +1,12 @@
 CC  = gcc 
 AS  = as 
-CPP = g++ -nostdlib -nostdinc -ffreestanding -Wall -Wextra -fno-exceptions
+CPP = g++
 LD = ld
 
-CFLAGS    = -nostdlib -nostdinc -ffreestanding -Wall -Wextra -fno-exceptions
-ASFLAGS   = 
-CPPFLAGS  = -nostdlib -nostdinc -ffreestanding -Wall -Wextra -fno-exceptions
-LDFLAGS   = 
+CFLAGS   = -nostdlib -nostdinc -ffreestanding -Wall -Wextra -fno-exceptions
+ASFLAGS  = 
+CPPFLAGS = -nostdlib -nostdinc -ffreestanding -Wall -Wextra -fno-exceptions
+LDFLAGS  = 
 
 all: link
 	# run

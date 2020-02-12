@@ -6,4 +6,4 @@ start:
     # set new rsp value
     mov     rsp, 0xFFFF8000001FFFF0
     call    kernel_main
-    jmp      .
+    jmp     .
