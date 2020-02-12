@@ -1,0 +1,6 @@
+#ifndef CINTTYPES_H
+#define CINTTYPES_H
+
+#include <inttypes.h>
+
+#endif // CINTTYPES_H

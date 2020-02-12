@@ -1,9 +1,9 @@
     .code64
     .intel_syntax noprefix
-    .extern kernel_main
+    .extern kmain
     .text
 start:
     # set new rsp value
     mov     rsp, 0xFFFF8000001FFFF0
-    call    kernel_main
+    call    kmain
     jmp     .
