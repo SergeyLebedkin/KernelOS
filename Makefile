@@ -15,10 +15,10 @@ all: link
 
 link: compile
 	# link kernel
-	${LD}                 \
-	./obj/kernel/entry.o  \
-	./obj/kernel/kernel.o \
-	-o ./bin/kernel.elf
+	${LD} ${LDFLAGS}          \
+		./obj/kernel/entry.o  \
+		./obj/kernel/kernel.o \
+		-o ./bin/kernel.elf
 	# get raw kernel code
 	objcopy -O binary ./bin/kernel.elf ./bin/kernel.bin
 	# get kernel assembler (for debug only)
