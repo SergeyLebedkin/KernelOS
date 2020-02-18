@@ -1,0 +1,11 @@
+#ifndef LOCALE
+#define LOCALE
+
+// std namespace
+namespace std
+{
+    // Locale class
+    class locale {};
+} // namespace std
+
+#endif // LOCALE

@@ -1,0 +1,108 @@
+#ifndef IOS
+#define IOS
+
+#include <iosfwd>
+
+// std namespace
+namespace std {
+    // streamsize
+    typedef long long streamsize;
+
+    // ios_base
+    class ios_base {
+    public:
+        // openmode
+        typedef int openmode;
+        static constexpr openmode app = 0x00000001;
+        static constexpr openmode ate = 0x00000002;
+        static constexpr openmode binary = 0x00000004;
+        static constexpr openmode in = 0x00000008;
+        static constexpr openmode out = 0x00000010;
+        static constexpr openmode trunc = 0x00000020;
+
+        // fmtflags
+        typedef int fmtflags;
+        static constexpr fmtflags dec = 0x00000001;
+        static constexpr fmtflags oct = 0x00000002;
+        static constexpr fmtflags hex = 0x00000004;
+        static constexpr fmtflags basefield = dec | oct | hex;
+        static constexpr fmtflags left = 0x00000008;
+        static constexpr fmtflags right = 0x00000010;
+        static constexpr fmtflags internal = 0x00000020;
+        static constexpr fmtflags adjustfield = left | right | internal;
+        static constexpr fmtflags scientific = 0x00000040;
+        static constexpr fmtflags fixed = 0x00000080;
+        static constexpr fmtflags floatfield = scientific | fixed;
+        static constexpr fmtflags boolalpha = 0x00000100;
+        static constexpr fmtflags showbase = 0x00000200;
+        static constexpr fmtflags showpoint = 0x00000400;
+        static constexpr fmtflags showpos = 0x00000800;
+        static constexpr fmtflags skipws = 0x00001000;
+        static constexpr fmtflags unitbuf = 0x00002000;
+        static constexpr fmtflags uppercase = 0x00004000;
+
+        // iostate
+        typedef int iostate;
+        static constexpr iostate goodbit = 0x00000000;
+        static constexpr iostate badbit = 0x00000001;
+        static constexpr iostate failbit = 0x00000002;
+        static constexpr iostate eofbit = 0x00000004;
+
+        // seekdir
+        typedef int seekdir;
+        static constexpr seekdir beg = 0x00000000;
+        static constexpr seekdir end = 0x00000001;
+        static constexpr seekdir cur = 0x00000002;
+
+        // Specifies the event type which is passed to functions registered by register_callback() on specific events
+        enum event { erase_event, imbue_event, copyfmt_event };
+
+        // The type of function callbacks that can be registered using register_callback() to be called on specific events.
+        typedef void (*event_callback)(event type, ios_base &ios, int index);
+
+    public:
+        ios_base(const ios_base &) = delete;
+        // virtual ~ios_base() {}
+
+    protected:
+        ios_base() {}
+    };
+
+    // ios_base
+    template<class charT, class traits> class basic_ios : public ios_base {
+    public:
+        // types
+        typedef charT char_type;
+        typedef traits traits_type;
+        typedef typename traits::int_type int_type;
+        typedef typename traits::pos_type pos_type;
+        typedef typename traits::off_type off_type;
+
+    protected:
+        // handle to basic stream buffer
+        std::basic_streambuf<charT, traits> *m_sb = nullptr;
+
+    public:
+        // constructors
+        basic_ios(const basic_ios &) = delete;
+        explicit basic_ios(std::basic_streambuf<charT, traits> *sb) { init(sb); }
+        // virtual ~basic_ios() {}
+
+    protected:
+        // constructor
+        basic_ios() {}
+
+    protected:
+        // initializes a default-constructed std::basic_ios
+        void init(std::basic_streambuf<charT, traits> *sb) { m_sb = sb; }
+        // move
+        void move(basic_ios &other) {}
+        void move(basic_ios &&other) {}
+        // swap
+        void swap(basic_ios &other) noexcept {}
+        // streambuffer
+        void set_rdbuf(std::basic_streambuf<charT, traits> *sb) {}
+    };
+} // namespace std
+
+#endif // IOS

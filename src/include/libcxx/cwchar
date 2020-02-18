@@ -1,0 +1,10 @@
+#ifndef CWCHAR
+#define CWCHAR
+
+// namespace std
+namespace std {
+    // mbstate_t
+    struct mbstate_t {};
+} // namespace std
+
+#endif // CWCHAR

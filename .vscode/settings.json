@@ -1,5 +1,12 @@
 {
     "files.associations": {
-        "cinttypes": "cpp"
+        "cinttypes": "cpp",
+        "cwchar": "cpp",
+        "iosfwd": "cpp",
+        "ios": "cpp",
+        "locale": "cpp",
+        "streambuf": "cpp",
+        "string": "cpp",
+        "ostream": "cpp",
     }
 }

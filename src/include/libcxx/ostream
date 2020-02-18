@@ -1,0 +1,70 @@
+#ifndef OSTREAM
+#define OSTREAM
+
+#include <streambuf>
+
+// namespace std
+namespace std {
+    // basic_ostream
+    template<class charT, class traits> class basic_ostream : virtual public basic_ios<charT, traits> {
+    public:
+        // types
+        typedef charT char_type;
+        typedef traits traits_type;
+        typedef typename traits_type::int_type int_type;
+        typedef typename traits_type::pos_type pos_type;
+        typedef typename traits_type::off_type off_type;
+
+        // constructor/destructor
+        explicit basic_ostream(basic_streambuf<char_type, traits> *sb);
+        virtual ~basic_ostream();
+
+        // assign/swap
+        basic_ostream &operator=(const basic_ostream &rhs) = delete; // C++14
+        basic_ostream &operator=(basic_ostream &&rhs);
+
+        // prefix/suffix
+        class sentry;
+
+        // formatted output
+        basic_ostream &operator<<(basic_ostream &(*pf)(basic_ostream &));
+        basic_ostream &operator<<(basic_ios<charT, traits> &(*pf)(basic_ios<charT, traits> &));
+        basic_ostream &operator<<(ios_base &(*pf)(ios_base &));
+        basic_ostream &operator<<(bool n);
+        basic_ostream &operator<<(short n);
+        basic_ostream &operator<<(unsigned short n);
+        basic_ostream &operator<<(int n);
+        basic_ostream &operator<<(unsigned int n);
+        basic_ostream &operator<<(long n);
+        basic_ostream &operator<<(unsigned long n);
+        basic_ostream &operator<<(long long n);
+        basic_ostream &operator<<(unsigned long long n);
+        basic_ostream &operator<<(float f);
+        basic_ostream &operator<<(double f);
+        basic_ostream &operator<<(long double f);
+        basic_ostream &operator<<(const void *p);
+        basic_ostream &operator<<(basic_streambuf<char_type, traits> *sb);
+        // basic_ostream &operator<<(nullptr_t);
+
+        // unformatted output
+        basic_ostream &put(char_type c);
+        basic_ostream &write(const char_type *s, streamsize n);
+        basic_ostream &flush();
+
+        // seeks
+        pos_type tellp();
+        basic_ostream &seekp(pos_type);
+        basic_ostream &seekp(off_type, ios_base::seekdir);
+
+    protected:
+        // constructor
+        basic_ostream(const basic_ostream &rhs) = delete;
+        basic_ostream(basic_ostream &&rhs);
+        // assign/swap
+        basic_ostream &operator=(basic_ostream &rhs) = delete;
+        basic_ostream &operator=(const basic_ostream &&rhs);
+        void swap(basic_ostream &rhs);
+    };
+} // namespace std
+
+#endif // OSTREAM
